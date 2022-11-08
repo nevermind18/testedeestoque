@@ -32,8 +32,22 @@ public class ProdutoRestController {
     @GetMapping(value = "/buscar/{id}")
     public ResponseEntity<Produto> buscarPorId(
         @PathVariable
-        Integer id) throws Exception {
+        Integer id){
         return produtoService.buscarPorId(id);
+    }
+    
+    @GetMapping(value = "/buscarpornome/{nome}")
+    public ResponseEntity<List<Produto>> buscarPorId(
+        @PathVariable
+        String nome) {
+        return produtoService.buscarPorNome(nome);
+    }
+    
+    @GetMapping(value = "/buscarportipo/{tipo}")
+    public ResponseEntity<List<Produto>> buscarPorTipo(
+        @PathVariable
+        String tipo){
+        return produtoService.buscarPorTipo(tipo);
     }
     
     @PutMapping(value = "/alterar/{id}")
@@ -46,10 +60,29 @@ public class ProdutoRestController {
         return produtoService.alterar(id, produto);
     }
     
+    @PutMapping(value = "/alterarestoque/")
+    public ResponseEntity<Produto> alterarEstoque(
+        @RequestParam
+        Integer id,
+        @RequestParam
+        Integer estoque){
+        return produtoService.alterarEstoque(id, estoque);
+    }
+    
+    @PutMapping(value = "/alterarvalor/")
+    public ResponseEntity<Produto> alterarValor(
+        @RequestParam
+        Integer id,
+        @RequestParam
+        Double valor){
+        return produtoService.alterarValor(id, valor);
+    }
+    
     @DeleteMapping(value = "/deletar/{id}")
     public ResponseEntity<Produto> deletar(
         @PathVariable
         Integer id) {
         return produtoService.deletar(id);
     }
+    
 }

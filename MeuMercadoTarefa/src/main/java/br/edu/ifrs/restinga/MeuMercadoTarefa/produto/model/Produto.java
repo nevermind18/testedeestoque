@@ -17,7 +17,7 @@ public class Produto {
     
     @Id
     private String id;
-    private Integer idProduto;
+    private Integer codigo;
     
     @Min(0)
     @NotNull
@@ -26,6 +26,10 @@ public class Produto {
     @NotEmpty
     @Length(min = 3, message = "O nome deve ter mais de 3 letras")
     private String nome;
+    @NotNull
+    @NotEmpty
+    @Length(min = 3, message = "O nome deve ter mais de 3 letras")
+    private String tipo;
     @Min(0)
     @NotNull
     private Integer estoque;

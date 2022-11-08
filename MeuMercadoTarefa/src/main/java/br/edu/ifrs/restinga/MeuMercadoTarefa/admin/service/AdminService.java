@@ -9,6 +9,7 @@ import br.edu.ifrs.restinga.MeuMercadoTarefa.incrementador.repository.SequenciaR
 import br.edu.ifrs.restinga.MeuMercadoTarefa.produto.model.Produto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +25,7 @@ public class AdminService {
         seq.setValor(seq.getValor() + 1);
         admin.setIdAdmin(seq.getValor());
         sequenciaRepository.save(seq);
+        admin.setSenha(new BCryptPasswordEncoder().encode(admin.getPassword()));
         return adminRepository.save(admin);
     }
     

@@ -20,7 +20,7 @@ public class ProdutoService {
     public Produto salvarProduto(Produto produto) {
         var seq = sequenciaRepository.findByNome(produto.sequencia);
         seq.setValor(seq.getValor() + 1);
-        produto.setIdProduto(seq.getValor());
+        produto.setCodigo(seq.getValor());
         sequenciaRepository.save(seq);
         return produtoRepository.save(produto);
     }
@@ -31,7 +31,7 @@ public class ProdutoService {
     
     public ResponseEntity<Produto> buscarPorId(Integer id) {
         
-        var produto = produtoRepository.findByIdProduto(id);
+        var produto = produtoRepository.findByCodigo(id);
         
         if (Objects.isNull(produto)) {
             return ResponseEntity.notFound().build();
@@ -41,25 +41,64 @@ public class ProdutoService {
     
     public ResponseEntity<Produto> alterar(Integer id, Produto produtoNew) {
         
-        var produtoOld = produtoRepository.findByIdProduto(id);
+        var produtoOld = produtoRepository.findByCodigo(id);
         
         if (Objects.isNull(produtoOld)) {
             return ResponseEntity.notFound().build();
         }
         
         produtoNew.setId(produtoOld.getId());
-        produtoNew.setIdProduto(produtoOld.getIdProduto());
+        produtoNew.setCodigo(produtoOld.getCodigo());
         
         return ResponseEntity.ok(produtoRepository.save(produtoNew));
     }
     
+    public ResponseEntity<Produto> alterarEstoque(Integer id, Integer estoque) {
+        
+        var produtoOld = produtoRepository.findByCodigo(id);
+        
+        if (Objects.isNull(produtoOld)) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        produtoOld.setEstoque(estoque);
+        
+        return ResponseEntity.ok(produtoRepository.save(produtoOld));
+    }
+    
+    public ResponseEntity<Produto> alterarValor(Integer id, Double valor) {
+        
+        var produtoOld = produtoRepository.findByCodigo(id);
+        
+        if (Objects.isNull(produtoOld)) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        produtoOld.setValor(valor);
+        
+        return ResponseEntity.ok(produtoRepository.save(produtoOld));
+    }
+    
     public ResponseEntity<Produto> deletar(Integer id) {
-        var produto = produtoRepository.findByIdProduto(id);
+        var produto = produtoRepository.findByCodigo(id);
         
         if (Objects.isNull(produto)) {
             return ResponseEntity.notFound().build();
         }
         produtoRepository.deleteById(produto.getId());
         return ResponseEntity.ok().build();
+    }
+    
+    public ResponseEntity<List<Produto>> buscarPorNome(String nome) {
+        
+        var produto = produtoRepository.findByNome(nome);
+        
+        return ResponseEntity.ok(produto);
+    }
+    
+    public ResponseEntity<List<Produto>> buscarPorTipo(String tipo) {
+        
+        var produto = produtoRepository.findByTipo(tipo);
+        return ResponseEntity.ok(produto);
     }
 }
